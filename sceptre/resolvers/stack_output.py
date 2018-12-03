@@ -109,11 +109,11 @@ class StackOutput(StackOutputBase):
         Adds dependency to a Stack.
         """
         self.dependency_stack_name, self.output_key = self.argument.split("::")
-        if "/" not in self.dependency_stack_name:
-            self.dependency_stack_name = "/".join([
-                os.path.split(self.stack.name)[0],
+        if os.sep not in self.dependency_stack_name:
+            self.dependency_stack_name = os.path.join(
+                os.path.dirname(self.stack.name),
                 self.dependency_stack_name
-            ])
+            )
 
         self.stack.dependencies.append(self.dependency_stack_name)
 
@@ -127,7 +127,7 @@ class StackOutput(StackOutputBase):
         self.logger.debug("Resolving Stack output: {0}".format(self.argument))
 
         friendly_stack_name = self.dependency_stack_name.replace(TEMPLATE_EXTENSION, "")
-        stack_name = "-".join([self.stack.project_code, friendly_stack_name.replace("/", "-")])
+        stack_name = "-".join([self.stack.project_code, friendly_stack_name.replace(os.sep, "-")])
 
         stack = next(
             stack for stack in self.stack.dependencies if stack.name == friendly_stack_name

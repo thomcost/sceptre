@@ -175,6 +175,7 @@ from setuptools import setup
 
 setup(
     name='custom_resolver',
+    py_modules=['custom_resolver']
     entry_points={
         'sceptre.resolvers': [
             'custom_resolver = custom_resolver:CustomResolver',
